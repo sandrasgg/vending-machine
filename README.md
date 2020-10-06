@@ -8,7 +8,7 @@ The machine accepts the following coins:
 > 0.05, 0.10, 0.20, 0.50, 1, 2
 
 ### 3. Buy the product
-When you reach the product's price, it substracts 1 from the product's stock
+When you reach the product's price, it substracts 1 from the product's stock  
 The machine notifies you have just bought that product
 
 ### 4. Refund remaining cash
