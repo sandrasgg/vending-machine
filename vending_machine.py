@@ -97,7 +97,7 @@ class Machine: #methods are in alphabetical order
             
     def refund(self):
         cash = self.validCoins
-        if cash >= 0.05: #if there's cash remainig in the machine
+        if cash >= 0.05: #if there's cash remaining in the machine
             print('\n{:.2f}'.format(cash) + "€ were refunded.") #show how much
             print('Thank you!')
             self.validCoins = 0 #and eliminate it from the machine
