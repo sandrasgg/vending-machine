@@ -14,7 +14,7 @@ class Product:
             self.stock -= 1 #else, subtract 1 from the product's stock
 
 
-class Machine: #methods are in alphabetical order
+class Machine: #methods in alphabetical order
     def __init__(self):
         self.validCoins = 0.0
         self.insertedCoins = 0
