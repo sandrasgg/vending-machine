@@ -1,17 +1,19 @@
+from utils import clear
 from product import Product
 from machine import Machine
-from utils import clear
 
 
 def init():
 
     machine = Machine()
+
     product1 = Product(1, 'Coke', 2.50, 1)
     product2 = Product(2, 'Fanta', 2.50, 2)
     product3 = Product(3, 'Sprite', 2.20, 3)
     product4 = Product(4, 'Aquarius', 2.45, 2)
     product5 = Product(5, 'Lemonade', 2.25, 1)
     product6 = Product(6, 'Water', 2, 1)
+
     machine.add_product(product1)
     machine.add_product(product2)
     machine.add_product(product3)
