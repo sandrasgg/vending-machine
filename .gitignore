@@ -1,0 +1,9 @@
+# pytest
+
+.pytest_cache
+__pycache__
+
+
+# MAC cache
+
+.DS_Store
