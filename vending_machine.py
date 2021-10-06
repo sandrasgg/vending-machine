@@ -1,4 +1,9 @@
-# python vending_machine.py
+import os
+
+
+
+def clear() -> None:
+    os.system('clear')
 
 class Product:
     def __init__(self, order, name, price, stock):
@@ -7,104 +12,117 @@ class Product:
         self.price = price
         self.stock = stock
     
-    def decreaseStock(self):
-        if self.stock == 0: #pass if the product's stock is already 0
+    def decrease_stock(self) -> None:
+        if self.stock == 0:
             pass
         else:
-            self.stock -= 1 #else, subtract 1 from the product's stock
+            self.stock -= 1
 
 
-class Machine: #methods in alphabetical order
+class Machine:
     def __init__(self):
-        self.validCoins = 0.0
-        self.insertedCoins = 0
+        self.valid_coins = 0.0
+        self.inserted_coins = 0
         self.products = []
-        self.remainingCash = 0.0
+        self.remaining_cash = 0.0
         self.working = True
         
-    def addProduct(self, product):
-        self.products.append(product) #add the product
+    def add_product(self, product) -> None:
+        self.products.append(product)
 
-    def buyProduct(self, product):
-        if self.validCoins >= product.price:                                      #if there is enough money to buy the product
-            self.validCoins = self.validCoins - product.price                     #subtract the price from the user's inserted coins
-            self.remainingCash = self.validCoins                                  #calc the change
-            product.decreaseStock()                                               #call this method to subtract one from the product.stock
-            print('\nYou just bought ' + product.name)                            #notify the user of which product has been bought
-            print('Cash remaining: {:.2f}'.format(self.remainingCash) , '€ ')     #and how much cash remains in the machine
+    def buy_product(self, product):
+        if self.valid_coins >= product.price:                                    
+            self.valid_coins = self.valid_coins - product.price                     
+            self.remaining_cash = self.valid_coins                                  
+            product.decrease_stock()                                               
+            print('\nYou just bought ' + product.name)                            
+            print('Cash remaining: {:.2f}'.format(self.remaining_cash) , '€ ')
+        else:
+            clear()     
 
-    def checkCoins(self, insertedCoin):
-        accepted_coins = [0.05, 0.10, 0.20, 0.50, 1, 2] #coins accepted by the machine
+    def check_coins(self, inserted_coin):
+        accepted_coins = [0.05, 0.10, 0.20, 0.50, 1, 2]
         accepted = False
         display_list = [float(item) for item in accepted_coins]
+        clear()
         for coin in accepted_coins:
-            if float(self.insertedCoins) in accepted_coins:          #if the inserted float is a valid coin
+            if float(self.inserted_coins) in accepted_coins:          
                 accepted = True
-                self.validCoins += self.insertedCoins                #add the inserted coin amount to valid coins
+                self.valid_coins += self.inserted_coins                
                 break
-            elif int(self.insertedCoins) in accepted_coins:          #if the inserted int is a valid coin
+            elif int(self.inserted_coins) in accepted_coins:          
                 accepted = True
-                self.validCoins += self.insertedCoins                #add the inserted coin amount to valid coins
+                self.valid_coins += self.inserted_coins                
                 break
-            else:                                                    #unless the inserted coin is not a valid coin
+            else:
+                clear()                                                    
                 print("\nSorry, we only accept these coins: ")       
                 print(' '.join(["{0:0.2f}".format(item) for item in display_list]))
                 break                    
-        return accepted  #return whether coins have been accepted by the machine
+        return accepted
 
-    def checkIfAvailable(self, chosen):
+    def is_product_available(self, chosen):
         state = False
-        for product in self.products:                                          #check every product in products[]
-            if str(product.order) in chosen or str(product.name) in chosen:    #if the user's input exists either in name or in order
-                if product.stock == 0:                                         #if that product is out of stock:
-                    print("\nWe're sorry, that product is out of stock. \nPlease select another product.")
+        for product in self.products:                                          
+            if str(product.order) in chosen or str(product.name) in chosen:    
+                if product.stock == 0:
+                    clear()                                         
+                    print(f"\nWe're sorry, {product.name} is out of stock. \nPlease select another product.")
                     break
-                else:                                                          #the product exists and is available
+                else:                                                          
                     state = True
                     break
         return state
 
-    def checkIfEmpty(self):
+    def is_empty(self):
         state = False
-        finalStock = sum(product.stock for product in self.products)
-        if finalStock == 0: #if the machine is empty
+        total_stock = sum(product.stock for product in self.products)
+        if total_stock == 0:
             print("\nWe're out of stock. Please come back later!")
-            state = True #notify and return True
+            state = True
         else:
             pass
         return state
 
     def exit(self, answer):
-        if answer == 'y' or answer == 'Y': #if the answer is yes
+        if answer == 'y' or answer == 'Y':
+            clear()
             print('\nHave a nice day!\n')
-            self.working = False #stop the vending machine
+            self.working = False
+        else:
+            clear()
         
-    def insertCoins(self, beverage):
-        enoughCoins = False
+    def insert_coins(self, beverage):
+        enough_coins = False
         final_price = beverage.price
-        while enoughCoins == False:
-            print("\nInserted cash: {:.2f}".format(self.validCoins))                  #show valid inserted cash to the user
+
+        while enough_coins == False:
+            print("\nInserted cash: {:.2f}".format(self.valid_coins))                  
             try:
-                self.insertedCoins = float(input('Please insert {:.2f}'.format(final_price - self.validCoins) + '€ : '))
-                if self.checkCoins(self.insertedCoins):                               #check if the user has inserted a valid coin
-                    if float(final_price) <= 0:                                       #there are enough coins for the purchase
-                        enoughCoins = True
-                    if self.validCoins >= float(final_price):
-                        enoughCoins = True
-            except ValueError:                                                        #if the user's input is not a number
-                print("\n*** ValueError: Please enter a number ***")                  
-        return enoughCoins #return whether the machine has received enough coins to complete the purchase
+                self.inserted_coins = float(input('Please insert {:.2f}'.format(final_price - self.valid_coins) + '€ : \n\n> '))
+                if self.check_coins(self.inserted_coins):                               
+                    if float(final_price) <= 0:                                      
+                        enough_coins = True
+                    if self.valid_coins >= float(final_price):
+                        enough_coins = True
+            except ValueError:                                                        
+                print("\n*** ValueError: Please enter a number ***") 
+
+        return enough_coins
             
     def refund(self):
-        cash = self.validCoins
-        if cash >= 0.05:                                            #if there's cash remaining in the machine
-            print('\n{:.2f}'.format(cash) + "€ were refunded.")     #show how much
-            print('Thank you!')
-            self.validCoins = 0                                     #and eliminate it from the machine
-        answer = input("\nWould you like to exit? (y/n) -")
-        self.exit(answer)                                           #call the exit method to confirm that the user wants to exit
+        cash = self.valid_coins
+        clear()
 
-    def selectProduct(self, chosen):
+        if cash >= 0.05:                                            
+            print('\n{:.2f}'.format(cash) + "€ were refunded.")     
+            print('Thank you!')
+            self.valid_coins = 0
+
+        answer = input("\nWould you like to exit? (y/n) -\n> ").lower()
+        self.exit(answer)                                           
+
+    def select_product(self, chosen):
         beverage = None
         for product in self.products:
             if chosen in product.name: 
@@ -113,54 +131,57 @@ class Machine: #methods in alphabetical order
             elif chosen in str(product.order):
                 beverage = product
                 break
-        print("\nYou selected:", beverage.name) #notify which product the user has selected
-        return beverage #and if the product exists, return the product
+        clear()
+        print("\nYou selected:", beverage.name)
+        return beverage
 
-    def showProducts(self): 
+    def show_products(self): 
         print("\nAvailable products:\n")
-        for product in self.products: #show each item available in products[]
+        for product in self.products:
             print("{}- {} .............. Price: {:.2f} €".format(product.order, product.name, product.price))
 
 
 def init():
 
     machine = Machine()
-    product1 = Product(1, 'Coke', 2.50, 2)
+    product1 = Product(1, 'Coke', 2.50, 1)
     product2 = Product(2, 'Fanta', 2.50, 2)
     product3 = Product(3, 'Sprite', 2.20, 3)
     product4 = Product(4, 'Aquarius', 2.45, 2)
     product5 = Product(5, 'Lemonade', 2.25, 1)
     product6 = Product(6, 'Water', 2, 1)
-    machine.addProduct(product1) # add each product
-    machine.addProduct(product2)
-    machine.addProduct(product3)
-    machine.addProduct(product4)
-    machine.addProduct(product5)
-    machine.addProduct(product6)
+    machine.add_product(product1)
+    machine.add_product(product2)
+    machine.add_product(product3)
+    machine.add_product(product4)
+    machine.add_product(product5)
+    machine.add_product(product6)
 
+    clear()
     print("\nWelcome to the Vending Machine!\n")
     while machine.working == True:
-        machine.showProducts()
+        machine.show_products()
         try:
-            choice = input("\nPlease select a product: ").capitalize()
-            if machine.checkIfAvailable(choice):
-                beverage = machine.selectProduct(choice)
-                machine.insertCoins(beverage)
-                machine.buyProduct(beverage)
-                if machine.checkIfEmpty():        #if the machine is empty
-                    machine.refund()              #call refund method
-                else:                             #if it's not empty, ask if the user wants to continue buying
-                    keepBuying = input("\nDo you want to buy something else? (y/n): ")
-                    if keepBuying == 'n' or keepBuying == 'N':
+            choice = input("\nPlease select a product: \n> ").capitalize()
+            if machine.is_product_available(choice):
+                beverage = machine.select_product(choice)
+                machine.insert_coins(beverage)
+                machine.buy_product(beverage)
+                if machine.is_empty():        
+                    machine.refund()              
+                else:                         
+                    keep_buying = input("\nDo you want to buy something else? (y/n): \n> ").lower()
+                    if keep_buying == 'n':
                         machine.refund()
                         
-                    if keepBuying == 'y' or keepBuying == 'Y':
+                    if keep_buying == 'y':
+                        clear()
                         continue
 
         except AttributeError:
             print("\n*** Please enter a product name or number ***")
 
-# initial call:
+
 init()
 
 
