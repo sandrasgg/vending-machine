@@ -3,10 +3,10 @@ from utils import clear
 
 class Machine:
     def __init__(self):
-        self.valid_coins = 0.0
+        self.valid_coins = 0
         self.inserted_coins = 0
         self.products = []
-        self.remaining_cash = 0.0
+        self.remaining_cash = 0
         self.working = True
         
     def add_product(self, product) -> None:
@@ -114,12 +114,20 @@ class Machine:
             elif chosen in str(product.order):
                 beverage = product
                 break
+                
         clear()
-        print("\nYou selected:", beverage.name)
+
+        try:
+            print("\nYou selected:", beverage.name)
+        except Exception as e:
+            pass
+
         return beverage
 
     def show_products(self) -> None: 
         print("\nAvailable products:\n")
         for product in self.products:
             print("{}- {} .............. Price: {:.2f} €".format(product.order, product.name, product.price))
+
+
 
