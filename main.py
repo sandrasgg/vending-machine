@@ -2,7 +2,6 @@ from utils import clear
 from product import Product
 from machine import Machine
 
-# ajskd
 
 def init():
 
