@@ -45,5 +45,5 @@ def init():
         except AttributeError:
             print("\n*** Please enter a product name or number ***")
 
-
-init()
+if __name__ == "__main__":
+    init()
