@@ -2,7 +2,7 @@
 
 
 class Product:
-    def __init__(self, order, name, price, stock):
+    def __init__(self, order: int, name: str, price: float, stock: int):
         self.order = order
         self.name = name
         self.price = price
