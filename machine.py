@@ -17,8 +17,8 @@ class Machine:
             self.valid_coins = self.valid_coins - product.price                     
             self.remaining_cash = self.valid_coins                                  
             product.decrease_stock()                                               
-            print('\nYou just bought ' + product.name)                            
-            print('Cash remaining: {:.2f}'.format(self.remaining_cash) , '€ ')
+            print(f'\nYou just bought {product.name}')                            
+            print('Cash remaining: {:.2f}'.format(self.remaining_cash), '€ ')
         else:
             clear()     
 
@@ -67,7 +67,7 @@ class Machine:
         return state
 
     def exit(self, answer: str) -> None:
-        if answer == 'y' or answer == 'Y':
+        if lower(answer) == 'y':
             clear()
             print('\nHave a nice day!\n')
             self.working = False
