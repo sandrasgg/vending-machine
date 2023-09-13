@@ -35,10 +35,10 @@ def init():
                     machine.refund()              
                 else:                         
                     keep_buying = input("\nDo you want to buy something else? (y/n): \n> ").lower()
-                    if keep_buying == 'n':
+                    if lower(keep_buying) == 'n':
                         machine.refund()
                         
-                    if keep_buying == 'y':
+                    if lower(keep_buying) == 'y':
                         clear()
                         continue
 
